@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Azure AI token and resource pricing calculator using Microsoft's Azure Retail Prices API.">
+  <title>Azure AI Cost Compass</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">✦</span><div><p class="eyebrow">Azure AI planning toolkit</p><h1>AI Cost Compass</h1></div></div>
+    <a class="docs-link" href="USAGE.md">Usage guide ↗</a>
+  </header>
+  <main class="shell">
+    <section class="hero">
+      <div><p class="eyebrow accent">Token-aware estimate</p><h2>Price the model.<br><em>Plan the platform.</em></h2><p class="hero-copy">Estimate Azure AI inference spend from input and output tokens, then add the Azure resources your application needs around it.</p></div>
+      <div class="hero-orbit" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="orbit-dot dot-one"></span><span class="orbit-dot dot-two"></span><span class="orbit-dot dot-three"></span></div>
+    </section>
+    <section class="workspace" aria-label="Azure AI pricing calculator">
+      <div class="panel assumptions-panel">
+        <div class="panel-heading"><div><p class="eyebrow">01 / model usage</p><h3>Set your AI workload</h3></div><span id="api-status" class="status-pill"><span class="status-dot"></span>Loading live prices</span></div>
+        <div class="field-grid model-grid">
+          <label class="field"><span>Azure region</span><select id="region"><option value="eastus">East US</option><option value="westeurope">West Europe</option><option value="southeastasia">Southeast Asia</option><option value="uksouth">UK South</option></select></label>
+          <label class="field"><span>Model</span><select id="model"><option value="gpt-4o">GPT-4o</option><option value="gpt-4o-mini">GPT-4o mini</option><option value="gpt-4-turbo">GPT-4 Turbo</option><option value="gpt-35-turbo">GPT-3.5 Turbo</option></select></label>
+          <label class="field"><span>Requests per month</span><input id="requests" type="number" min="0" value="100000" step="1000"></label>
+          <label class="field"><span>Currency</span><select id="currency"><option value="USD">USD — $</option><option value="EUR">EUR — €</option><option value="GBP">GBP — £</option><option value="INR">INR — ₹</option></select></label>
+        </div>
+        <div class="token-grid">
+          <label class="field token-field"><span>Input tokens / request <output id="input-output">1,000</output></span><input id="input-tokens" type="number" min="0" value="1000" step="100"><small>Prompt, system, and retrieved context</small></label>
+          <label class="field token-field"><span>Output tokens / request <output id="output-output">500</output></span><input id="output-tokens" type="number" min="0" value="500" step="100"><small>Generated completion or response</small></label>
+        </div>
+        <div class="notice"><span class="notice-icon">i</span><p>Prices are fetched from Microsoft's <a href="https://prices.azure.com/" target="_blank" rel="noreferrer">Azure Retail Prices REST API</a>. If the API is unavailable, the calculator uses clearly labelled planning fallback rates.</p></div>
+      </div>
+      <div class="content-grid">
+        <section class="panel services-panel">
+          <div class="panel-heading"><div><p class="eyebrow">02 / Azure platform</p><h3>Resources around the model</h3></div><button class="button button-secondary" id="add-resource" type="button">＋ Add resource</button></div>
+          <div id="resource-list" class="resource-list"></div>
+          <div id="empty-state" class="empty-state" hidden><span>⌁</span><p>No platform resources yet.<br>Add one to model the full workload.</p></div>
+        </section>
+        <aside class="panel summary-panel">
+          <p class="eyebrow">03 / projection</p><h3>Monthly outlook</h3>
+          <div class="total-block"><span>Estimated total</span><strong id="total-cost">$0.00</strong><small id="annual-cost">or $0.00 annually</small></div>
+          <div class="breakdown"><div><span>Model tokens</span><strong id="token-total">$0.00</strong></div><div><span>Azure resources</span><strong id="resource-total">$0.00</strong></div><div><span>Tokens / month</span><strong id="token-volume">0</strong></div></div>
+          <div class="summary-footer"><div class="confidence"><span class="confidence-bar"><i></i><i></i><i></i><i></i><i></i></span><span id="confidence-label">Waiting for price data</span></div><button class="button button-primary" id="reset" type="button">Reset estimate</button></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <footer>AI Cost Compass <span>•</span> Azure Retail Prices API · Estimates only</footer>
+  <script src="app.js"></script>
+</body>
+</html>
